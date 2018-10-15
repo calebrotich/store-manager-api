@@ -10,7 +10,7 @@ install:
 
 # command to run tests
 script:
-  - coverage run --source=app.api.v1  -m pytest app/tests/v1 && coverage report
+  - coverage run --source=app.api.v1 -m pytest app/tests/v1 && coverage report
 
 # Post coverage results to coverage.io
 after-success:

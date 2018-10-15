@@ -10,4 +10,3 @@ from .resources import endpoints
 
 
 API = Api(v1_blueprint)
-API.add_resource(endpoints.add_product, '/')

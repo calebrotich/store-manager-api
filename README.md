@@ -1,2 +1,3 @@
 # store-manager-api
+https://travis-ci.com/calebrotich10/store-manager-api.svg?branch=develop
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store. This repository contains the API endpoints for the application.

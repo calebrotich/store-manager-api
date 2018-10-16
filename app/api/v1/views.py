@@ -3,7 +3,9 @@
 from flask_restful import Api, Resource
 
 from . import v1_blueprint
-from .resources import admin_endpoints
+from .resources import admin_endpoints, general_users_endpoints
 
 API = Api(v1_blueprint)
-API.add_resource(admin_endpoints.Product, '/products')
+
+API.add_resource(admin_endpoints.AdminActs, '/products')
+API.add_resource(general_users_endpoints.GeneralUsersActs, '/products')

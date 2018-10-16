@@ -1,3 +1,7 @@
+"""This module contains endpoints
+
+that are specific to the admin
+"""
 from flask import Flask, jsonify, request, abort, make_response
 from flask_restful import Resource
 
@@ -5,20 +9,24 @@ from . import helper_functions
 from app.api.v1.models import products
 
 class Product(Resource):
+    """Class contains the tests for admin
+    
+    specific endpoints
+    """
 
 
     def post(self):
         """POST /products endpoint"""
                   
         data = request.get_json()
-        helper_functions.abort_if_no_json_from_request(data)
+        helper_functions.no_json_in_request(data)
         try:
             product_name = data['product_name']
             product_price = data['product_price']
             category = data['category']
         except KeyError:
-            # If order is missing required item_name or item_price
-            helper_functions.abort_if_missing_required_param()
+            # If product is missing required parameter
+            helper_functions.missing_a_required_parameter()
 
         if product_price < 1:
             abort(make_response(jsonify(

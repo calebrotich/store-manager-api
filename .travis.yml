@@ -2,7 +2,7 @@ language: python
 
 # python version
 python:
-  - "3.6.6"
+  - "3.6"
 
 # command to install dependencies
 install:

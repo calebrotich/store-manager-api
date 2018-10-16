@@ -8,7 +8,7 @@ from flask_restful import Resource
 from . import helper_functions
 from app.api.v1.models import products
 
-class Product(Resource):
+class AdminActs(Resource):
     """Class contains the tests for admin
     
     specific endpoints

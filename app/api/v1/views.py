@@ -9,3 +9,4 @@ API = Api(v1_blueprint)
 
 API.add_resource(admin_endpoints.AdminActs, '/products')
 API.add_resource(general_users_endpoints.GeneralUsersActs, '/products')
+API.add_resource(general_users_endpoints.SpecificProduct, '/products/<int:product_id>')

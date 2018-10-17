@@ -47,3 +47,29 @@ def add_new_product(name, price, category):
         # if any of the required parameterss is missing or none
         missing_a_required_parameter()
     return response
+
+
+
+def retrieve_specific_product(product_id):
+    """
+        Helper method to fetch product from list of products,
+        given valid id
+    """
+    specific_product = None
+    for product in products.PRODUCTS:
+        if product['product_id'] == product_id:
+            specific_product = product
+            break
+    if not specific_product:
+        abort_if_product_is_not_found(product_id)
+
+    return specific_product
+
+
+def abort_if_product_is_not_found(product_id):
+    """
+        Helper method to search for Product
+        Abort if product not found and throw error
+    """
+    abort(make_response(jsonify(
+        message="Product with id {} not found".format(product_id)), 404))

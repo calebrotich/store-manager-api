@@ -1,6 +1,6 @@
-"""This module contains the data
+"""This module contains the data store
 
-store and data logic of the application
+and data logic of the store's products
 """
 
 PRODUCTS = []

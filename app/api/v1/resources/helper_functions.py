@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import abort, jsonify, make_response
 
-from app.api.v1.models import products
+from app.api.v1.models import products, sale_orders
 
 def no_json_in_request(data):
     """Aborts if the data does
@@ -73,3 +73,30 @@ def abort_if_product_is_not_found(product_id):
     """
     abort(make_response(jsonify(
         message="Product with id {} not found".format(product_id)), 404))
+
+
+def add_new_sale_record(name, price, quantity, amount):
+
+    """Creates a new sale record"""
+
+    if name and price and quantity and amount:
+        # If all the required parameters are available
+        sale_order_id = len(sale_orders.SALE_ORDERS) + 1
+        sale_order = {
+            'sale_order_id': sale_order_id,
+            'product_name': name,
+            'product_price': price,
+            'quantity': quantity,
+            'amount': amount,
+            'date_added': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+        sale_orders.SALE_ORDERS.append(sale_order)
+        response = jsonify({
+            "message": "Sale record added successfully",
+            "sale_order": sale_orders.SALE_ORDERS[-1]})
+        response.status_code = 201
+    else:
+        # if any of the required parameters is missing or none
+        missing_a_required_parameter()
+    return response

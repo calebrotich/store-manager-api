@@ -31,6 +31,13 @@ class TestBaseClass(unittest.TestCase):
         'category': 'Phones'
         }
 
+        self.SALE_ORDERS = {
+        'product_name': 'Phone Model 1',
+        'product_price': 55000,
+        'quantity': 6,
+        'amount': (55000 * 6)
+        }
+
 
     def tearDown(self):
         """Destroy the application that

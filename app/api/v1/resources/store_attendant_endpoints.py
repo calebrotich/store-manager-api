@@ -29,6 +29,11 @@ class SaleRecords(Resource):
             # If product is missing required parameter
             helper_functions.missing_a_required_parameter()
 
+        if not isinstance(product_price, int):
+            abort(make_response(jsonify(
+                message="Bad request. The product price should be digits"
+            ), 400))
+
         if product_price < 1:
             abort(make_response(jsonify(
                 message="Bad request. Price of the product should be a positive integer above 0."
@@ -39,10 +44,6 @@ class SaleRecords(Resource):
                 message="Bad request. Product name should be a string"
             ), 400))
 
-        if not isinstance(product_price, int):
-            abort(make_response(jsonify(
-                message="Bad request. The product price should be digits"
-            ), 400))
 
         if not isinstance(quantity, int):
             abort(make_response(jsonify(

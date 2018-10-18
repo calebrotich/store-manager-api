@@ -2,6 +2,9 @@
 
 specific endpoints
 """
+
+import json
+
 from flask import current_app
 
 from . import base_test
@@ -30,3 +33,24 @@ class TestAdminEndpoints(base_test.TestBaseClass):
             response)['product']['category'], self.PRODUCT['category'])
         self.assertEqual(helper_functions.convert_response_to_json(
             response)['message'], 'Product added successfully')
+
+
+    def test_fetch_sale_orders(self):
+        """Test GET /saleorder - when sale order exists"""
+
+        self.app_test_client.post(
+        '{}/saleorder'.format(self.BASE_URL), data=json.dumps(dict(
+                                                                sale_order_id = 1,
+                                                                product_name = "Test Product",
+                                                                product_price = 20,
+                                                                quantity = 1,
+                                                                amount = 20
+                                                                )), content_type='application/json')
+
+        response = self.app_test_client.get(
+            '{}/saleorder'.format(self.BASE_URL)
+        )
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(helper_functions.convert_response_to_json(
+            response)['sale_orders'][0]['product_name'], "Test Product")

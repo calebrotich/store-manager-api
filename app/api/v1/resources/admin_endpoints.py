@@ -6,9 +6,9 @@ from flask import Flask, jsonify, request, abort, make_response
 from flask_restful import Resource
 
 from . import helper_functions
-from app.api.v1.models import products
+from app.api.v1.models import products, sale_orders
 
-class AdminActs(Resource):
+class ProductsManagement(Resource):
     """Class contains the tests for admin
     
     specific endpoints
@@ -61,4 +61,18 @@ class AdminActs(Resource):
             # If there are no products in the store
             response = helper_functions.add_new_product(product_name, product_price, category)
 
+        return response
+
+
+class SaleAttendantsManagement(Resource):
+    def get(self):
+        """GET /saleorder endpoint"""
+        
+        if not sale_orders.SALE_ORDERS:
+            # If no sale orders exist in the store yet
+            abort(make_response(
+                jsonify(message="There are no sale orders made yet"), 404))
+        # If at least one sale order exists
+        response = jsonify({'sale_orders': sale_orders.SALE_ORDERS})
+        response.status_code = 200
         return response

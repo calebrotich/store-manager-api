@@ -61,18 +61,32 @@ def retrieve_specific_product(product_id):
             specific_product = product
             break
     if not specific_product:
-        abort_if_product_is_not_found(product_id)
+        abort_if_item_is_not_found(product_id)
 
     return specific_product
 
+def retrieve_specific_sale_order(sale_id):
+    """
+        Helper method to fetch sale order from list of sale orders,
+        given a valid id
+    """
+    specific_sale_order = None
+    for sale_order in sale_orders.SALE_ORDERS:
+        if sale_order['sale_order_id'] == sale_id:
+            specific_sale_order = sale_order
+            break
+    if not specific_sale_order:
+        abort_if_item_is_not_found(sale_id)
 
-def abort_if_product_is_not_found(product_id):
+    return specific_sale_order
+
+def abort_if_item_is_not_found(item_id):
     """
         Helper method to search for Product
         Abort if product not found and throw error
     """
     abort(make_response(jsonify(
-        message="Product with id {} not found".format(product_id)), 404))
+        message="Item with id {} not found".format(item_id)), 404))
 
 
 def add_new_sale_record(name, price, quantity, amount):

@@ -8,7 +8,7 @@ from flask_restful import Resource
 from . import helper_functions
 from app.api.v1.models import products
 
-class GeneralUsersActs(Resource):
+class AllProducts(Resource):
     """Class contains the tests for both
 
     the admin and the normal user endpoints
@@ -31,10 +31,19 @@ class SpecificProduct(Resource):
 
     def get(self, product_id):
         """GET /products/<int:product_id>"""
-        
             
         product = helper_functions.retrieve_specific_product(product_id)
         response = jsonify(product)
         response.status_code = 200
 
         return response
+
+
+class SpecificSaleOrder(Resource):
+
+    def get(self, sale_order_id):
+        """GET /saleorder/<int:sale_order_id>"""
+
+        sale_order = helper_functions.retrieve_specific_sale_order(sale_order_id)
+        response = jsonify(sale_order)
+        response.status_code = 200

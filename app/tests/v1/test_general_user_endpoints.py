@@ -3,6 +3,8 @@
 are general to both the admin and the normal user
 """
 
+import json
+
 from . import base_test
 from . import helper_functions
 
@@ -11,6 +13,7 @@ class TestGeneralUsersEndpoints(base_test.TestBaseClass):
 
     and normal user, endpoints' tests
     """
+
 
     def test_retrieve_all_products(self):
         """Test GET /products - when products exist"""
@@ -31,3 +34,12 @@ class TestGeneralUsersEndpoints(base_test.TestBaseClass):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(helper_functions.convert_response_to_json(
             response)['product_name'], self.PRODUCT['product_name'])
+
+    def test_retrieve_specific_sale_order(self):
+        """Test GET /saleorder/id - when saleorder exists"""
+
+        
+        response = self.app_test_client.get(
+            '{}/saleorder/1'.format(self.BASE_URL))
+
+        self.assertEqual(response.status_code, 200)

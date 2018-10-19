@@ -8,7 +8,8 @@ from .resources import admin_endpoints, general_users_endpoints, store_attendant
 API = Api(v1_blueprint)
 
 API.add_resource(admin_endpoints.ProductsManagement, '/products')
-API.add_resource(general_users_endpoints.GeneralUsersActs, '/products')
+API.add_resource(general_users_endpoints.AllProducts, '/products')
 API.add_resource(general_users_endpoints.SpecificProduct, '/products/<int:product_id>')
 API.add_resource(store_attendant_endpoints.SaleRecords, '/saleorder')
 API.add_resource(admin_endpoints.SaleAttendantsManagement, '/saleorder')
+API.add_resource(general_users_endpoints.SpecificSaleOrder, '/saleorder/<int:sale_order_id>')

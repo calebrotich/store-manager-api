@@ -4,9 +4,10 @@ that are specific to the admin
 """
 from flask import Flask, jsonify, request, abort, make_response
 from flask_restful import Resource
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from . import helper_functions
-from app.api.v1.models import products, sale_orders
+from app.api.v1.models import products, sale_orders, users
 
 class ProductsManagement(Resource):
     """Class contains the tests for admin
@@ -14,10 +15,13 @@ class ProductsManagement(Resource):
     specific endpoints
     """
 
-
+    @jwt_required
     def post(self):
         """POST /products endpoint"""
-                  
+        
+        user_email = get_jwt_identity()
+        helper_functions.abort_if_user_is_not_admin(user_email)            
+        
         data = request.get_json()
         helper_functions.no_json_in_request(data)
         try:
@@ -65,9 +69,15 @@ class ProductsManagement(Resource):
 
 
 class SaleAttendantsManagement(Resource):
+
+
+    @jwt_required
     def get(self):
         """GET /saleorder endpoint"""
-        
+
+        user_email = get_jwt_identity()
+        helper_functions.abort_if_user_is_not_admin(user_email)
+
         if not sale_orders.SALE_ORDERS:
             # If no sale orders exist in the store yet
             abort(make_response(

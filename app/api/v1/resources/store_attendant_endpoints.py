@@ -4,6 +4,7 @@ that are specific to the store attendant
 """
 from flask import Flask, jsonify, request, abort, make_response
 from flask_restful import Resource
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from . import helper_functions
 from app.api.v1.models import products
@@ -14,7 +15,7 @@ class SaleRecords(Resource):
     specific endpoints
     """
 
-
+    @jwt_required
     def post(self):
         """POST /saleorder endpoint"""
                   

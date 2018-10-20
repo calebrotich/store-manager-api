@@ -4,6 +4,7 @@ for both the admin and the normal user
 """
 from flask import jsonify, abort, make_response
 from flask_restful import Resource
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from . import helper_functions
 from app.api.v1.models import products
@@ -13,7 +14,6 @@ class AllProducts(Resource):
 
     the admin and the normal user endpoints
     """
-
 
     def get(self):
         """GET /products endpoint"""
@@ -41,6 +41,7 @@ class SpecificProduct(Resource):
 
 class SpecificSaleOrder(Resource):
 
+    @jwt_required
     def get(self, sale_order_id):
         """GET /saleorder/<int:sale_order_id>"""
 

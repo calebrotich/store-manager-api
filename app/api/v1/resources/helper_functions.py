@@ -1,7 +1,8 @@
 from datetime import datetime
+
 from flask import abort, jsonify, make_response
 
-from app.api.v1.models import products, sale_orders
+from app.api.v1.models import products, sale_orders, users
 
 def no_json_in_request(data):
     """Aborts if the data does
@@ -22,7 +23,6 @@ def missing_a_required_parameter():
     """
     abort(make_response(jsonify(
         message="Bad request. Request missing a required argument"), 400))
-
 
 def add_new_product(name, price, category):
     """Creates a new product"""
@@ -114,3 +114,10 @@ def add_new_sale_record(name, price, quantity, amount):
         # if any of the required parameters is missing or none
         missing_a_required_parameter()
     return response
+
+def abort_if_user_is_not_admin(user):
+    user_role = [users['role'] for users in users.USERS if users['email'] == user][0]
+    if user_role!= "Admin":
+        abort(make_response(jsonify(
+            message="Unauthorized. This action is not for you"
+        ), 401))

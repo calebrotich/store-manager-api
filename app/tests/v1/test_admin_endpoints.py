@@ -13,14 +13,15 @@ from . import helper_functions
 class TestAdminEndpoints(base_test.TestBaseClass):
     """ Class contains tests for admin specific endpoints """
 
-
     def test_add_new_product(self):
         """Test POST /products"""
-        
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
         # send a dummy data response for testing
         response = self.app_test_client.post('{}/products'.format(
-            self.BASE_URL), json=self.PRODUCT, headers={
-                'Content-Type': 'application/json'})
+            self.BASE_URL), json=self.PRODUCT, headers=dict(Authorization="Bearer " + token),
+            content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(helper_functions.convert_response_to_json(
@@ -39,9 +40,12 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         with one of the required parameters missing
         """
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
         response = self.app_test_client.post('{}/products'.format(
-            self.BASE_URL), json={'product_name': 'Nyundo'}, headers={
-                'Content-Type': 'application/json'})
+            self.BASE_URL), json={'product_name': 'Nyundo'}, headers=dict(Authorization="Bearer " + token),
+            content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(helper_functions.convert_response_to_json(
@@ -52,10 +56,14 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         with the price of the product below minimum
         """
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
         response = self.app_test_client.post('{}/products'.format(
             self.BASE_URL), json={
                 'product_id': 1, 'product_name': "Hammer", 'product_price': 0, 'category':'Tools'
-                }, headers={'Content-Type': 'application/json'})
+                }, headers=dict(Authorization="Bearer " + token),
+                content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(helper_functions.convert_response_to_json(
@@ -68,10 +76,14 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         with the product name not a string
         """
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
         response = self.app_test_client.post('{}/products'.format(
             self.BASE_URL), json={
                 'product_id': 1, 'product_name': 200, 'product_price': 200, 'category':'Tools'
-                }, headers={'Content-Type': 'application/json'})
+                }, headers=dict(Authorization="Bearer " + token),
+                content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(helper_functions.convert_response_to_json(
@@ -83,10 +95,14 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         with the category not a string
         """
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
         response = self.app_test_client.post('{}/products'.format(
             self.BASE_URL), json={
                 'product_id': 1, 'product_name': "Hammer", 'product_price': 200, 'category': 200
-                }, headers={'Content-Type': 'application/json'})
+                }, headers=dict(Authorization="Bearer " + token),
+                content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(helper_functions.convert_response_to_json(
@@ -98,15 +114,20 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         with the product name already existing
         """
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
         self.app_test_client.post('{}/products'.format(
             self.BASE_URL), json={
                 'product_id': 1, 'product_name': "Hammer", 'product_price': 200, 'category': "Tools"
-                }, headers={'Content-Type': 'application/json'})
+                }, headers=dict(Authorization="Bearer " + token),
+                content_type='application/json')
 
         response = self.app_test_client.post('{}/products'.format(
             self.BASE_URL), json={
                 'product_id': 1, 'product_name': "Hammer", 'product_price': 200, 'category': "Tools"
-                }, headers={'Content-Type': 'application/json'})
+                }, headers=dict(Authorization="Bearer " + token),
+                content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(helper_functions.convert_response_to_json(
@@ -116,20 +137,29 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
     def test_fetch_sale_orders(self):
         """Test GET /saleorder - when sale order exists"""
+        self.register_test_admin_account()
+        token = self.login_test_admin()
 
         self.app_test_client.post(
-        '{}/saleorder'.format(self.BASE_URL), data=json.dumps(dict(
-                                                                sale_order_id = 1,
-                                                                product_name = "Test Product",
-                                                                product_price = 20,
-                                                                quantity = 1,
-                                                                amount = 20
-                                                                )), content_type='application/json')
-
+        '{}/saleorder'.format(self.BASE_URL), json={
+            'sale_order_id': 1,
+            'product_name': "Test Product",
+            'product_price': 20,
+            'quantity': 1,
+            'amount': 20
+        },
+        headers=dict(Authorization="Bearer " + token),
+        content_type='application/json')
+                                                                
         response = self.app_test_client.get(
-            '{}/saleorder'.format(self.BASE_URL)
+            '{}/saleorder'.format(self.BASE_URL),
+
+            headers=dict(Authorization="Bearer " + token),
+            content_type='application/json'
         )
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(helper_functions.convert_response_to_json(
             response)['sale_orders'][0]['product_name'], "Test Product")
+        self.assertEqual(helper_functions.convert_response_to_json(
+           response)['sale_orders'][0]['product_price'], 20)

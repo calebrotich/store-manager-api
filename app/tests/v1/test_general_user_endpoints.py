@@ -38,8 +38,24 @@ class TestGeneralUsersEndpoints(base_test.TestBaseClass):
     def test_retrieve_specific_sale_order(self):
         """Test GET /saleorder/id - when saleorder exists"""
 
-        
+        self.register_test_admin_account()
+        token = self.login_test_admin()
+
+        self.app_test_client.post(
+        '{}/saleorder'.format(self.BASE_URL), json={
+            'sale_order_id': 1,
+            'product_name': "Test Product",
+            'product_price': 20,
+            'quantity': 1,
+            'amount': 20
+        },
+        headers=dict(Authorization="Bearer " + token),
+        content_type='application/json')
+
         response = self.app_test_client.get(
-            '{}/saleorder/1'.format(self.BASE_URL))
+            '{}/saleorder/1'.format(self.BASE_URL),
+            headers=dict(Authorization="Bearer " + token),
+            content_type='application/json'
+            )
 
         self.assertEqual(response.status_code, 200)

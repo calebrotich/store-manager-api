@@ -55,5 +55,15 @@ Store Manager is a web application that helps store owners manage sales and prod
   </tr>
 </table>
 
+
 #### Deployment
 [Heroku](https://store-manager-api.herokuapp.com/api/v1/products)
+
+#### Documentation
+https://documenter.getpostman.com/view/5265531/RWguxwzy
+
+#### Author
+[Caleb Rotich](https://github.com/calebrotich10)
+
+#### Credits
+This application was build as part of the Andela NBO 33 challenge

@@ -2,25 +2,28 @@
 
 that are specific to the admin
 """
+import os
 from flask import Flask, jsonify, request, abort, make_response
 from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from functools import wraps
+import jwt
 
 from . import helper_functions
 from app.api.v1.models import products, sale_orders, users
+from . import verify
+
 
 class ProductsManagement(Resource):
     """Class contains the tests for admin
     
     specific endpoints
     """
-
-    @jwt_required
     def post(self):
         """POST /products endpoint"""
-        
-        user_email = get_jwt_identity()
-        helper_functions.abort_if_user_is_not_admin(user_email)            
+
+        logged_user = verify.verify_tokens()
+        helper_functions.abort_if_user_is_not_admin(logged_user)            
         
         data = request.get_json()
         helper_functions.no_json_in_request(data)
@@ -60,29 +63,38 @@ class ProductsManagement(Resource):
 
             except IndexError:
                 # If there is no product with the same name
-                response = helper_functions.add_new_product(product_name, product_price, category)
+                added_product = products.Products(product_name, product_price, category)
+                response = added_product.save()
         else:
             # If there are no products in the store
-            response = helper_functions.add_new_product(product_name, product_price, category)
+                added_product = products.Products(product_name, product_price, category)
+                response = added_product.save()
 
-        return response
+        return make_response(jsonify({
+            "message": "Product added successfully",
+            "product": response
+        }), 201)
 
 
 class SaleAttendantsManagement(Resource):
+    """Class contains the tests managing
 
+    sale orders
+    """
 
-    @jwt_required
     def get(self):
         """GET /saleorder endpoint"""
 
-        user_email = get_jwt_identity()
-        helper_functions.abort_if_user_is_not_admin(user_email)
-
+        verify.verify_tokens()
+        
         if not sale_orders.SALE_ORDERS:
-            # If no sale orders exist in the store yet
+            # If no products exist in the store yet
             abort(make_response(
                 jsonify(message="There are no sale orders made yet"), 404))
-        # If at least one sale order exists
-        response = jsonify({'sale_orders': sale_orders.SALE_ORDERS})
+        # if at least one product exists
+        response = jsonify({
+            'message': "Successfully fetched all the sale orders",
+            'sale_orders': sale_orders.SALE_ORDERS
+            })
         response.status_code = 200
         return response

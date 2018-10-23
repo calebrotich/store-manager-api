@@ -7,7 +7,8 @@ from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from . import helper_functions
-from app.api.v1.models import products
+from app.api.v1.models import products, sale_orders
+from . import verify
 
 class SaleRecords(Resource):
     """Class contains the tests for store attendant
@@ -15,17 +16,17 @@ class SaleRecords(Resource):
     specific endpoints
     """
 
-    @jwt_required
     def post(self):
         """POST /saleorder endpoint"""
-                  
+
+        verify.verify_tokens()
+
         data = request.get_json()
         helper_functions.no_json_in_request(data)
         try:
             product_name = data['product_name']
             product_price = data['product_price']
             quantity = data['quantity']
-            amount = (product_price * quantity)
         except KeyError:
             # If product is missing required parameter
             helper_functions.missing_a_required_parameter()
@@ -51,6 +52,12 @@ class SaleRecords(Resource):
                 message="Bad request. The quantity should be specified in digits"
             ), 400))
 
-        response = helper_functions.add_new_sale_record(product_name, product_price, quantity, amount)
+        # response = helper_functions.add_new_sale_record(product_name, product_price, quantity, amount)
+        sale_order = sale_orders.SaleOrder(product_name, product_price, quantity)
+        response = sale_order.save()
 
-        return response
+
+        return make_response(jsonify({
+            "message": "Checkout complete",
+            "saleorder": response
+        }), 201)

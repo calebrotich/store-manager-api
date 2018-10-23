@@ -17,15 +17,13 @@ def verify_tokens():
         data = jwt.decode(token, os.getenv('JWT_SECRET_KEY', default='SdaHv342nx!jknr837bjwd?c,lsajjjhw673hdsbgeh'))
         for user in users.USERS:
             if user['email'] == data['email']:
-                logged_user = user
+                return user["email"]
 
     except:
-        print(os.getenv('JWT_SECRET_KEY', default='SdaHv342nx!jknr837bjwd?c,lsajjjhw673hdsbgeh'))
         abort(make_response(jsonify({
             "Message": "The token is either expired or wrong"
-        }), 403))
+        }), 403))    
 
-    return logged_user["email"]
 
 
 def verify_post_product_fields(product_price, product_name, category):

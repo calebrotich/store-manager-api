@@ -25,7 +25,7 @@ class ProductsManagement(Resource):
 
         # Token verification and admin user determination
         logged_user = verify.verify_tokens()
-        helper_functions.abort_if_user_is_not_admin(logged_user)            
+        helper_functions.abort_if_user_is_not_admin(logged_user)
         
         data = request.get_json()
         helper_functions.no_json_in_request(data)

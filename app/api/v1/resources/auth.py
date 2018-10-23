@@ -1,3 +1,4 @@
+import os
 import datetime
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -35,16 +36,23 @@ class Login(Resource):
         data = request.get_json()
         if not data:
             return make_response(jsonify({
-                            "message": "Kindly enter your credentials",
-                            }), 400)
+                "message": "Kindly enter your credentials"
+            }
+            ), 400)
         email = data["email"]
         password = data["password"]
+
         for user in users.USERS:
             if email == user["email"] and check_password_hash(user["password"], password):
-                expires = datetime.timedelta(minutes=30)
-                token = create_access_token(identity=email, expires_delta=expires)
-                return {'token': token, "message": "You are successfully logged in"}, 200
-
+                token = jwt.encode({
+                    "email": email,
+                    "exp": datetime.datetime.utcnow() + datetime.timedelta
+                                  (minutes=5)
+                }, os.getenv('JWT_SECRET_KEY', default='SdaHv342nx!jknr837bjwd?c,lsajjjhw673hdsbgeh'))
+                return make_response(jsonify({
+                             "message": "You are successfully logged in",
+						     "token": token.decode("UTF-8")}), 200)
         return make_response(jsonify({
-                        "message": "Wrong credentials provided"
-                        }), 403)
+            "message": "Wrong credentials provided"
+        }
+        ), 403)

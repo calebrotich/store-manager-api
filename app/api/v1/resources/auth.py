@@ -28,7 +28,10 @@ class SignUp(Resource):
         Validator.validate_credentials(self, data)
         user = users.User_Model(email, password, role)
         res = user.save()
-        return make_response(res, 202)
+        return make_response(jsonify({
+            "message": "Account created successfully",
+            "user": res
+        }), 202)
 
 
 class Login(Resource):

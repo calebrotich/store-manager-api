@@ -16,7 +16,12 @@ class User_Model():
             "password": self.password,
             "role": self.role
             }
+
+        new_added_user = {
+            "id": self.id,
+            "email": self.email,
+            "role": self.role
+            }
             
         USERS.append(new_user)
-        response = jsonify(new_user)
-        return response
+        return new_added_user

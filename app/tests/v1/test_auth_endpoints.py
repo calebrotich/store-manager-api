@@ -25,7 +25,7 @@ class TestAuthEndpoints(base_test.TestBaseClass):
         data = json.loads(res.data.decode())
         print(data)
 
-        self.assertEqual(data['email'], "test_add_new_user@gmail.com")
+        self.assertEqual(data['user']['email'], "test_add_new_user@gmail.com")
         self.assertEqual(res.status_code, 202)
 
     def test_add_new_user_no_data(self):

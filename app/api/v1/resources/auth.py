@@ -49,11 +49,10 @@ class Login(Resource):
             if email == user["email"] and check_password_hash(user["password"], password):
                 token = jwt.encode({
                     "email": email,
-                    "exp": datetime.datetime.utcnow() + datetime.timedelta
-                                  (minutes=5)
+                    "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)                                  
                 }, os.getenv('JWT_SECRET_KEY', default='SdaHv342nx!jknr837bjwd?c,lsajjjhw673hdsbgeh'))
                 return make_response(jsonify({
-                             "message": "You are successfully logged in",
+                             "message": "Login successful",
 						     "token": token.decode("UTF-8")}), 200)
         return make_response(jsonify({
             "message": "Wrong credentials provided"

@@ -8,9 +8,9 @@ from app.api.v1.models import users
 
 class Validator:
     def validate_credentials(self, data):
-        self.email = data["email"]
-        self.password = data["password"]
-        self.role = data["role"]
+        self.email = data["email"].strip()
+        self.password = data["password"].strip()
+        self.role = data["role"].strip()
         valid_email = validate_email(self.email)
         for user in users.USERS:
             if self.email == user["email"]:

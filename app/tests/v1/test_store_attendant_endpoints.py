@@ -18,20 +18,20 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         # send a dummy data response for testing
         response = self.app_test_client.post('{}/saleorder'.format(
-            self.BASE_URL), json=self.SALE_ORDERS, headers=dict(Authorization="Bearer " + token),
+            self.BASE_URL), json=self.SALE_ORDERS, headers=dict(Authorization=token),
             content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)['sale_order']['product_name'], self.SALE_ORDERS['product_name'])
+            response)['saleorder']['product_name'], self.SALE_ORDERS['product_name'])
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)['sale_order']['product_price'], self.SALE_ORDERS['product_price'])
+            response)['saleorder']['product_price'], self.SALE_ORDERS['product_price'])
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)['sale_order']['quantity'], self.SALE_ORDERS['quantity'])
+            response)['saleorder']['quantity'], self.SALE_ORDERS['quantity'])
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)['sale_order']['amount'], self.SALE_ORDERS['amount'])
+            response)['saleorder']['amount'], self.SALE_ORDERS['amount'])
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)['message'], 'Sale record added successfully')
+            response)['message'], 'Checkout complete')
 
 
     def test_create_sale_order_parameter_missing(self):
@@ -43,7 +43,7 @@ class TestAdminEndpoints(base_test.TestBaseClass):
         token = self.login_test_admin()
 
         response = self.app_test_client.post('{}/saleorder'.format(
-            self.BASE_URL), json={'product_name': 'Nyundo'}, headers=dict(Authorization="Bearer " + token),
+            self.BASE_URL), json={'product_name': 'Nyundo'}, headers=dict(Authorization=token),
             content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
@@ -61,7 +61,7 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         response = self.app_test_client.post('{}/saleorder'.format(
             self.BASE_URL), json={'product_name': 'Nyundo', 'product_price': -1, 'quantity': 1},
-            headers=dict(Authorization="Bearer " + token),
+            headers=dict(Authorization=token),
             content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
@@ -79,7 +79,7 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         response = self.app_test_client.post('{}/saleorder'.format(
             self.BASE_URL), json={'product_name': 3, 'product_price': 300, 'quantity': 1},
-            headers=dict(Authorization="Bearer " + token),
+            headers=dict(Authorization=token),
             content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
@@ -98,7 +98,7 @@ class TestAdminEndpoints(base_test.TestBaseClass):
 
         response = self.app_test_client.post('{}/saleorder'.format(
             self.BASE_URL), json={'product_name': "Nyundo", 'product_price': "300", 'quantity': 1},
-            headers=dict(Authorization="Bearer " + token),
+            headers=dict(Authorization=token),
             content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
@@ -116,7 +116,7 @@ class TestAdminEndpoints(base_test.TestBaseClass):
         
         response = self.app_test_client.post('{}/saleorder'.format(
             self.BASE_URL), json={'product_name': "Nyundo", 'product_price': 300, 'quantity': "1"}, 
-            headers=dict(Authorization="Bearer " + token),
+            headers=dict(Authorization=token),
             content_type='application/json')
 
         self.assertEqual(response.status_code, 400)

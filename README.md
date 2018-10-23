@@ -55,5 +55,32 @@ Store Manager is a web application that helps store owners manage sales and prod
   </tr>
 </table>
 
+#### Installing the application
+1. Open a command terminal in your preferred folder
+2. Run command `git clone https://github.com/calebrotich10/store-manager-api.git` to have a copy locally
+3. `cd store-manager-api`
+4. Create a virtual environment for the application `virtualenv venv`
+5. Install dependencies from the `requirements.txt` file `pip3 install -r requirements.txt`
+6. Export environment variables to your environment ```export JWT_SECRET_KEY=your-secret-key```, ```export FLASK_APP="run.py"```
+6. Run the application using flask command `flask run` or using python3 `python3 run.py`
+
+#### Running tests
+Inside the virtual environment created above, run command: `coverage run --source=app.api.v1 -m pytest app/tests/v1 -v -W error::UserWarning && coverage report`
+
+#### Technologies used
+1. `JWT` for authentication
+2. `pytest` for running tests
+3. Python based framework `flask`
+4. Flask packages
+
 #### Deployment
 [Heroku](https://store-manager-api.herokuapp.com/api/v1/products)
+
+#### Documentation
+https://documenter.getpostman.com/view/5265531/RWguxwzy
+
+#### Author
+[Caleb Rotich](https://github.com/calebrotich10)
+
+#### Credits
+This application was build as part of the Andela NBO 33 challenge

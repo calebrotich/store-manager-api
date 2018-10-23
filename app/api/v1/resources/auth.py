@@ -22,9 +22,9 @@ class SignUp(Resource):
             return make_response(jsonify({
                                     "message": "Missing required credentials"
                                     }), 400)
-        email = data["email"]
-        password = generate_password_hash(data["password"], method='sha256')
-        role = data["role"]
+        email = data["email"].strip()
+        password = generate_password_hash(data["password"].strip(), method='sha256')
+        role = data["role"].strip()
         Validator.validate_credentials(self, data)
         user = users.User_Model(email, password, role)
         res = user.save()

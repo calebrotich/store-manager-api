@@ -62,8 +62,8 @@ class SpecificSaleOrder(Resource):
         for sale_order in sale_orders.SALE_ORDERS:
             if sale_order["sale_order_id"] == sale_order_id:
                 return make_response(jsonify({
-                    "message": "{} retrieved successfully".format(sale_order["product_name"]),
-                    "product": sale_order["product_name"]
+                    "message": "Sale Order with Id {} retrieved successfully".format(sale_order["sale_order_id"]),
+                    "product": sale_order
                 }
                 ), 200)
 

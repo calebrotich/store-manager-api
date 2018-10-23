@@ -104,4 +104,4 @@ class TestGeneralUsersEndpoints(base_test.TestBaseClass):
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)["Message"], "This token is invalid")
+            response)["Message"], "The token is either expired or wrong")

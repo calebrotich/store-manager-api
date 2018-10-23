@@ -67,8 +67,7 @@ class SpecificSaleOrder(Resource):
                 }
                 ), 200)
 
-            else:
-                return make_response(jsonify({
-                    "message": "Sale Order with id {} not found".format(sale_order_id)
-                }
-                ), 404)
+        return make_response(jsonify({
+            "message": "Sale Order with id {} not found".format(sale_order_id)
+        }
+        ), 404)

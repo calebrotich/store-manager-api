@@ -42,8 +42,8 @@ class Login(Resource):
                 "message": "Kindly enter your credentials"
             }
             ), 400)
-        email = data["email"]
-        password = data["password"]
+        email = data["email"].strip()
+        password = data["password"].strip()
 
         for user in users.USERS:
             if email == user["email"] and check_password_hash(user["password"], password):

@@ -45,7 +45,7 @@ class TestGeneralUsersEndpoints(base_test.TestBaseClass):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(helper_functions.convert_response_to_json(
-            response)['product'], self.PRODUCT['product_name'])
+            response)['product']['product_name'], self.PRODUCT['product_name'])
 
     def test_retrieve_specific_sale_order(self):
         """Test GET /saleorder/id - when saleorder exists"""

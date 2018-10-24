@@ -27,7 +27,7 @@ def missing_a_required_parameter():
 
 def abort_if_user_is_not_admin(user):
     user_role = [users['role'] for users in users.USERS if users['email'] == user][0]
-    if user_role!= "Admin":
+    if user_role!= "admin":
         abort(make_response(jsonify(
             message="Unauthorized. This action is not for you"
         ), 401))

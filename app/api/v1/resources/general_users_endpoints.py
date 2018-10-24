@@ -41,7 +41,7 @@ class SpecificProduct(Resource):
             if product["product_id"] == product_id:
                 return make_response(jsonify({
                     "message": "{} retrieved successfully".format(product["product_name"]),
-                    "product": product["product_name"]
+                    "product": product
                 }
                 ), 200)
 

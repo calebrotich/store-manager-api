@@ -54,7 +54,7 @@ class TestBaseClass(unittest.TestCase):
         res = self.app_test_client.post("api/v1/auth/signup",
         json={
         "email": "user@gmail.com",
-        "role": "Admin",
+        "role": "admin",
         "password": "Password12#"
         }, 
         headers={

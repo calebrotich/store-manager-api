@@ -16,10 +16,9 @@ from . import verify
 
 
 class ProductsManagement(Resource):
-    """Class contains the tests for admin
+    """Class contains admin specific endpoints"""
     
-    specific endpoints
-    """
+    
     def post(self):
         """POST /products endpoint"""
 

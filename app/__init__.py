@@ -20,4 +20,10 @@ def create_app(config_name):
     from .api.v1 import auth_v1_blueprint as v1_blueprint
     app.register_blueprint(v1_blueprint, url_prefix='/api/v1/auth')
 
+    from .api.v2 import endpoint_v2_blueprint as v2_blueprint
+    app.register_blueprint(v2_blueprint, url_prefix='/api/v2')
+
+    from .api.v2 import auth_v2_blueprint as v2_blueprint
+    app.register_blueprint(v2_blueprint, url_prefix='/api/v2/auth')
+
     return app

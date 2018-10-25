@@ -32,4 +32,6 @@ config = {
     'testing': Testing,
     'staging': Staging,
     'production': Production,
+    'db_url': "dbname='storemanager' host='localhost' port='5432' user='postgres' password='Password12#'",
+    'test_db_url': "dbname='storemanagertest' host='localhost' port='5432' user='postgres' password='Password12#'"
 }

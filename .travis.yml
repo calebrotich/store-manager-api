@@ -2,8 +2,6 @@ env:
   global:
     - CC_TEST_REPORTER_ID=18007e474cdfcf70da58a682805aff9f88216339b0dce34454dc0bfcc988ea91
     - APP_SETTINGS="development"
-    - DATABASE_URL="dbname='storemanager' host='localhost' port='5432' user='postgres' password='Password12#'"
-    - DATABASE_TEST_URL="dbname='storemanagertest' host='localhost' port='5432' user='postgres' password='Password12#'"
     - SECRET_KEY="mvangiffj38kncliu3yt7gvLWDNTDISFJWrk'\flQHJsdnlQI2ROH"
 
 language: python
@@ -20,12 +18,10 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-  - psql -c 'CREATE DATABASE storemanager;' -U postgres
-  - psql -c 'CREATE DATABASE storemanagertest;' -U postgres
 
 # command to run tests
 script:
-  - coverage run --source=app.api -m pytest app/tests -v -W error::UserWarning && coverage report
+  - coverage run --source=app.api.v1 -m pytest app/tests/v1 -v -W error::UserWarning && coverage report
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

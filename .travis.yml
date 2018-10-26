@@ -1,0 +1,31 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=18007e474cdfcf70da58a682805aff9f88216339b0dce34454dc0bfcc988ea91
+    - APP_SETTINGS="development"
+    - SECRET_KEY="mvangiffj38kncliu3yt7gvLWDNTDISFJWrk'\flQHJsdnlQI2ROH"
+
+language: python
+
+# python version
+python:
+  - "3.6"
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+# command to run tests
+script:
+  - coverage run --source=app.api.v1 -m pytest app/tests/v1 -v -W error::UserWarning && coverage report
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+# Post coverage results to coverage.io
+after_success:
+  - coveralls
